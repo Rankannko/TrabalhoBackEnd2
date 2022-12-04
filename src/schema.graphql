@@ -46,7 +46,7 @@ type Mutation{
 type Subscription{
     mensagem(idTopico: ID!, idUsuario: ID!): Mensagem!
     dado: Int!
-    log (idAdmin: String!, senhaAdmin: String!): [Log!]!
+    log (idAdmin: String!, senhaAdmin: String!): Log!
 }
 
 input InserirMensagemInput{

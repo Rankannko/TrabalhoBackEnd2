@@ -9,6 +9,7 @@ const Query ={
             date: new Date(),
         }
         ctx.db.log.push(log);
+        ctx.pubSub.publish('log',{log});
         
         return ctx.db.usuarios
     },
@@ -19,6 +20,8 @@ const Query ={
             date: new Date(),
         }
         ctx.db.log.push(log);
+        ctx.pubSub.publish('log',{log});
+
         return ctx.db.topicos
     },
     mensagens(parent,args,ctx,info){
@@ -28,6 +31,8 @@ const Query ={
             date: new Date(),
         }
         ctx.db.log.push(log);
+        ctx.pubSub.publish('log',{log});
+
         return ctx.db.mensagens
     },
     historico(parent,args,ctx,info){
@@ -41,12 +46,22 @@ const Query ={
             date: new Date(),
         }
         ctx.db.log.push(log);
+        ctx.pubSub.publish('log',{log});
+
         return historico
     },
     consultarLogQuery(parent, args, ctx, info){
         if (args.acessar.idAdmin !== "admin" || args.acessar.senhaAdmin !== "admin"){
             throw new GraphQLError ("Acesso negado");
         }
+        const log={
+            id: uuidv4(),
+            operacao: (info.operation.operation + " - " + info.fieldName),
+            date: new Date(),
+        }
+        ctx.db.log.push(log);
+        ctx.pubSub.publish('log',{log});
+
         return ctx.db.log
     }
 }

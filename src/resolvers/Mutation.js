@@ -16,6 +16,7 @@ const Mutation= {
         }
         ctx.db.usuarios.push(usuario);
         ctx.db.log.push(log);
+        ctx.pubSub.publish('log',{log});
         return usuario;
     },
     atualizarUsuario (parent, args, ctx, info){
@@ -29,6 +30,7 @@ const Mutation= {
             throw new Error ("Usuario não existe");
         Object.assign(usuario, {nome: args.usuario.nome||usuario.nome,topico: args.usuario.topico||usuario.topico});
         ctx.db.log.push(log);
+        ctx.pubSub.publish('log',{log});
         return usuario;
     },
     inserirMensagem (parent,args,ctx,info){
@@ -52,6 +54,7 @@ const Mutation= {
         operacao: (info.operation.operation + " - " + info.fieldName),
         date: new Date(),
     }
+    //var logDB = ctx.db.log;
     ctx.db.log.push(log);
     ctx.db.mensagens.push(mensagem);
     ctx.pubSub.publish('mensagem', args.mensagem.topico,{mensagem});
